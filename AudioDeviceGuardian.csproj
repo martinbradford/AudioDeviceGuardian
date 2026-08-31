@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>AudioDeviceGuardian</AssemblyName>
+    <RootNamespace>AudioDeviceGuardian</RootNamespace>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <!-- No console window: this is a background tray app -->
+    <StartupObject>AudioDeviceGuardian.Program</StartupObject>
+    <!-- AudioSwitcher.AudioApi(.CoreAudio) ship only .NET Framework assemblies,
+         so restoring them against net10.0-windows raises NU1701. The library is
+         a Windows-only COM-interop wrapper and runs fine on modern .NET on
+         Windows (the whole point of using it), so we knowingly suppress it. -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Wraps the undocumented IPolicyConfig COM interface needed to actually
+         set the default audio endpoint - the public Core Audio API has no
+         supported call for this. -->
+    <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="3.0.3" />
+  </ItemGroup>
+
+</Project>
